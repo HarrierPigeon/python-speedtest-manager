@@ -8,6 +8,7 @@ The body of this was written in one day on a whim by someone who is *not* a prog
 ``pip install speedtest-cli``
 ### ``Pillow`` - for working with images.
 ``pip install pillow``
+(relevant later...)
 ### ``requests``
 ``pip install requests``
 
