@@ -38,3 +38,6 @@ print(os.path.join(local_baseDir,local_CSVfolder,outputFile))
 enableTonsOfPrintInfo = False # This is mostly for debugging.
 enableSpeedtestUpdate = True  # Mostly for peace of mind.
 ```
+
+# Usage
+Call ``main.py`` somehow after setting up a config file.  How you call it is up to you, mostly because I haven't quite figured out cronjobs.  Also callable via Windows' Task Scheduler.
