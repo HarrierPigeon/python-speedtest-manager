@@ -12,7 +12,7 @@ The body of this was written in one day on a whim by someone who is *not* a prog
 ``pip install requests``
 
 ## Configuration File:
-Change this to fit your needs.
+Change this to fit your needs, and rename to ``config.py``.
 As stated, I'd *highly* recommend leaving socket.gethostname() in there in case you have multiple things running this- if you do, then you can just fork this repo, change the config, and push.
 
 ```python
