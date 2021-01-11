@@ -142,7 +142,7 @@ if config.enableTonsOfPrintInfo == True: print("running FTP Test")
 print(f"Output File: {speedtestResultImage}")
 if config.UseFTP == True: ftpTesting.uploadIMG(modifiedImage[1],speedtestResultImage)
 
-
+if config.deleteBaseImage != True: os.remove(os.path.join(config.local_baseDir,config.local_IMGfolder,speedtestResultImage))
 # if config.enableTonsOfPrintInfo == True: 
 print("SUCCESS 💯")
 
