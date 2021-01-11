@@ -7,10 +7,10 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 import matplotlib
-import functools
 import io
 import urllib
 import config
+import functools
 # from io import BytesIO
 relativePath = config.local_baseDir
 outputFile = config.outputCSVfile
