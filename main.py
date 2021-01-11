@@ -8,6 +8,7 @@ import matplotlib
 import config
 import imageHandler
 import PIL
+import re
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -42,9 +43,6 @@ def getSpeedtestResults():
 def formatResults(input1: str):
     '''adds hostname to the beginning and removes the \r\n from the end''' 
     output = socket.gethostname() + "," + input1.rstrip('\r\n')
-    # This part removes a T and a Z so that the time goes from "2021-01-07T16:01:22.412761Z" to "2021-01-07 16:01:22.41276".
-    # Makes it possible to parse as Date Time in Google Sheets (and others, I'd wager) directly without needing to parse data manually first.
-    output = output[:51]+" "+output[52:66]+output[68:] 
     if config.enableTonsOfPrintInfo == True: print(output)
     return output
 
@@ -54,16 +52,26 @@ def formatResults(input1: str):
 # csvHeader = 'Hostname,Server ID,Sponsor,Server Name,Timestamp,Distance,Ping,Download,Upload,Share,IP Address'
 csvHeaders = ['Hostname', 'Server ID', 'Sponsor', 'Server Name', 'Timestamp', 'Distance', 'Ping', 'Download', 'Upload', 'Share', 'IP Address']
 
-# if config.enableTonsOfPrintInfo == True: print(formattingTest.split(','))
+
 
 def outputAsList(input1):
     '''turns comma-delimited lines into a list for more proper storage or something like that.'''
     output = []
     for line in csv.reader([input1],skipinitialspace=True):
         output += line
-    return output
 
-# if config.enableTonsOfPrintInfo == True: print(outputAsList(formattingTest))
+    # This part gets rid of the T & Z found in the timestamps returned by speedtest-cli. 
+    # This part removes a T and a Z so that the time goes from "2021-01-07T16:01:22.412761Z" to "2021-01-07 16:01:22.41276".
+    # Makes it possible to parse as Date Time in Google Sheets (and others, I'd wager) directly without needing to parse data manually first.
+    # I originally hardcoded this, which wasn't smart because it doesn't handle anything changing.
+    dateMinusT = re.sub("T"," ",output[4])
+    if config.enableTonsOfPrintInfo == True: print("list Output \n",output)
+    if config.enableTonsOfPrintInfo == True: print(output[4])
+    if config.enableTonsOfPrintInfo == True: print()
+    output[4] = re.sub("Z","",dateMinusT)
+    if config.enableTonsOfPrintInfo == True: print("list Output \n",output)
+    if config.enableTonsOfPrintInfo == True: print(output[4])
+    return output
 
 
 # courtesy of https://stackoverflow.com/a/37256114
