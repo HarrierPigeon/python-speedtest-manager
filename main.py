@@ -6,7 +6,11 @@ import secrets
 import FTPhandler
 import matplotlib
 import config
-
+import imageHandler
+import PIL
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
 # This code has a TON of print statements in here from when I was writing and debugging the thing- 
 # instead of remove them outright, I've added "flags" for them in config- to get a *bunch* of data, set enableTonsOfPrintInfo to True.
@@ -17,8 +21,8 @@ import config
 # This program creates a separate file per-hostname, because KIS,S.  Can join in Excel / etc. easily enough.
 
 
-if config.enableTonsOfPrintInfo == True: print("config.outputFile: ",config.outputFile) 
-if config.enableTonsOfPrintInfo == True: print("outputFilePath: ",os.path.join(config.local_baseDir,config.local_CSVfolder,config.outputFile)) 
+if config.enableTonsOfPrintInfo == True: print("config.outputCSVfile: ",config.outputCSVfile) 
+if config.enableTonsOfPrintInfo == True: print("outputCSVfilePath: ",os.path.join(config.local_baseDir,config.local_CSVfolder,config.outputCSVfile)) 
 
 
 if config.enableTonsOfPrintInfo == True: print("running")
@@ -113,22 +117,31 @@ def appendResultsToCSV(fileLocation,results):
 # Tweaked, enabled not using FTP server:
 
 # Step One: set up connection to FTP server
-if config.UseFTP == True: ftpTesting = FTPhandler.ftpHandler(config.FTPcredentials,config.FTP_baseDir,config.FTP_CSVfolder,config.FTP_IMGfolder,config.local_baseDir,config.local_CSVfolder,config.local_IMGfolder,config.enableTonsOfPrintInfo)
+if config.UseFTP == True: ftpTesting = FTPhandler.ftpHandler(config.FTPcredentials,config.FTP_baseDir,config.FTP_CSVfolder,config.FTP_IMGfolder,config.local_baseDir,config.local_CSVfolder,config.local_IMGfolder,True)
 # Step Two: pull results from FTP server so that it has the most recent copy on hand. Not having a file in the server winds up being okay, because appendresultstoCSV will create a CSV if there isn't one available.
 if config.UseFTP == True: ftpTesting.getAllCSV()
-if config.UseFTP == True: ftpTesting.getCSV(config.outputFile)
+if config.UseFTP == True: ftpTesting.getCSV(config.outputCSVfile)
 # Step Three- get results from speedtest-cli, turn them into CSV format, and then save them to the local CSV copy.
-outputLocation = os.path.join(config.local_baseDir,config.local_CSVfolder,config.outputFile)
+outputLocation = os.path.join(config.local_baseDir,config.local_CSVfolder,config.outputCSVfile)
 if config.enableTonsOfPrintInfo == True: print(outputLocation)
-#
-# testString = '16623,Cox - Wichita,"Wichita, KS",2021-01-07T16:01:22.412761Z,2.89276551783173,17.96,195259669.975886,12179870.4733959,http://www.speedtest.net/result/10709712999.png,98.187.34.96'
 if config.enableSpeedtestUpdate == True: print("running speedtest now")
 appendResultsToCSV(outputLocation,outputAsList(formatResults(getSpeedtestResults())))
 if config.enableSpeedtestUpdate == True: print("speedtest finished")
 # Step Four- upload the updated CSV file to the FTP server
-# if config.UseFTP == True: ftpTesting.uploadCSV(config.outputFile)
+if config.UseFTP == True: ftpTesting.uploadCSV(config.outputCSVfile)
 
 # Step Five- download the image from CSV
+print("pulling image")
+speedtestResultImage = imageHandler.getImage(os.path.join(config.local_baseDir,config.local_CSVfolder,config.outputCSVfile),config.local_baseDir,config.local_IMGfolder,config.enableTonsOfPrintInfo)
+print("modifying image")
+modifiedImage = imageHandler.modifyImage(config.local_baseDir,config.local_IMGfolder,speedtestResultImage,config.replaceLocation,config.replaceISP,config.replacementForLocation,config.replacementForISP,config.fontURL)
+modifiedImage[0].show()
+print(modifiedImage[1])
+# Step Six: Push image to FTP server
+if config.enableTonsOfPrintInfo == True: print("running FTP Test")
+print(f"Output File: {speedtestResultImage}")
+if config.UseFTP == True: ftpTesting.uploadIMG(modifiedImage[1],speedtestResultImage)
+
 
 # if config.enableTonsOfPrintInfo == True: 
 print("SUCCESS 💯")
