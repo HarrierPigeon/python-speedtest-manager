@@ -42,3 +42,5 @@ replacementForLocation = socket.gethostname()
 imagePrepend = "output"
 baseImagePrepend = "input"
 deleteBaseImage = False
+
+openImage = False

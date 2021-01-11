@@ -135,7 +135,7 @@ print("pulling image")
 speedtestResultImage = imageHandler.getImage(os.path.join(config.local_baseDir,config.local_CSVfolder,config.outputCSVfile),config.local_baseDir,config.local_IMGfolder,config.enableTonsOfPrintInfo)
 print("modifying image")
 modifiedImage = imageHandler.modifyImage(config.local_baseDir,config.local_IMGfolder,speedtestResultImage,config.replaceLocation,config.replaceISP,config.replacementForLocation,config.replacementForISP,config.fontURL)
-modifiedImage[0].show()
+if config.openImage == True: modifiedImage[0].show()
 print(modifiedImage[1])
 # Step Six: Push image to FTP server
 if config.enableTonsOfPrintInfo == True: print("running FTP Test")
