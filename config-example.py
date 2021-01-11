@@ -33,7 +33,7 @@ enableTonsOfPrintInfo = False # This is mostly for debugging.
 enableSpeedtestUpdate = True  # Mostly for peace of mind.
 
 # ImageHandler Stuff
-
+makeImage = False
 fontURL = "http://db.onlinewebfonts.com/t/056353a27c68233bab7e618c8b191d65.ttf"
 replaceISP = True
 replacementForISP = "HarrierPigeon, Inc."

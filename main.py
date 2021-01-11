@@ -131,18 +131,19 @@ if config.enableSpeedtestUpdate == True: print("speedtest finished")
 if config.UseFTP == True: ftpTesting.uploadCSV(config.outputCSVfile)
 
 # Step Five- download the image from CSV
-print("pulling image")
-speedtestResultImage = imageHandler.getImage(os.path.join(config.local_baseDir,config.local_CSVfolder,config.outputCSVfile),config.local_baseDir,config.local_IMGfolder,config.enableTonsOfPrintInfo)
-print("modifying image")
-modifiedImage = imageHandler.modifyImage(config.local_baseDir,config.local_IMGfolder,speedtestResultImage,config.replaceLocation,config.replaceISP,config.replacementForLocation,config.replacementForISP,config.fontURL)
-if config.openImage == True: modifiedImage[0].show()
-print(modifiedImage[1])
-# Step Six: Push image to FTP server
-if config.enableTonsOfPrintInfo == True: print("running FTP Test")
-print(f"Output File: {speedtestResultImage}")
-if config.UseFTP == True: ftpTesting.uploadIMG(modifiedImage[1],speedtestResultImage)
+if config.makeImage == True:
+    print("pulling image")
+    speedtestResultImage = imageHandler.getImage(os.path.join(config.local_baseDir,config.local_CSVfolder,config.outputCSVfile),config.local_baseDir,config.local_IMGfolder,config.enableTonsOfPrintInfo)
+    print("modifying image")
+    modifiedImage = imageHandler.modifyImage(config.local_baseDir,config.local_IMGfolder,speedtestResultImage,config.replaceLocation,config.replaceISP,config.replacementForLocation,config.replacementForISP,config.fontURL)
+    if config.openImage == True: modifiedImage[0].show()
+    print(modifiedImage[1])
+    # Step Six: Push image to FTP server
+    if config.enableTonsOfPrintInfo == True: print("running FTP Test")
+    print(f"Output File: {speedtestResultImage}")
+    if config.UseFTP == True: ftpTesting.uploadIMG(modifiedImage[1],speedtestResultImage)
 
-if config.deleteBaseImage == True: os.remove(os.path.join(config.local_baseDir,config.local_IMGfolder,speedtestResultImage))
+    if config.deleteBaseImage == True: os.remove(os.path.join(config.local_baseDir,config.local_IMGfolder,speedtestResultImage))
 # if config.enableTonsOfPrintInfo == True: 
 print("SUCCESS 💯")
 

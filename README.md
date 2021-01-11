@@ -11,6 +11,8 @@ The body of this was written in one day on a whim by someone who is *not* a prog
 (relevant later...)
 ### ``requests``
 ``pip install requests``
+### ``functools``
+``pip install functools``
 
 ## Configuration File:
 Change this to fit your needs, and rename to ``config.py``.
