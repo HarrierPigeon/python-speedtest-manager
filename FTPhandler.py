@@ -75,12 +75,13 @@ class ftpHandler:
         os.chdir(self.localWorkDir)
 
 
-    def uploadCSV(self,filename:str):
+    def uploadCSV(self,fileLocation:str):
+        if self.doDebug == True: print("uploadCSV called")
         ftpConnection = ftplib.FTP(host=self.creds.serverAddress,user=self.creds.username,passwd=self.creds.password)
         ftpConnection.cwd(self.ftpDir)
 
         ftpConnection.cwd(self.ftpCSVsub)
-        # debugging stuff, this will go away later.
+
         if self.doDebug == True: print(os.getcwd())
 
         if not os.path.isdir(self.localWorkDir):
@@ -92,15 +93,15 @@ class ftpHandler:
             os.mkdir(self.localCSVsub)
         os.chdir(self.localCSVsub)
 
-        os.chdir(self.localWorkDir)
+
         if self.doDebug == True: print("uploadCSV RAN")
         ftpConnection.sendcmd('MLST /')
         if self.doDebug == True: print(ftpConnection.nlst())
         files = ftpConnection.nlst()
-        if filename in files:
-            with open(filename, "rb") as file:
+        if fileLocation in files:
+            with open(fileLocation, "rb") as file:
                 # use FTP's STOR command to upload the file
-                ftpConnection.storbinary(f"STOR {filename}", file)
+                ftpConnection.storbinary(f"STOR {fileLocation}", file)
         else:
             if self.doDebug == True: print("file not available")
 
@@ -149,6 +150,33 @@ class ftpHandler:
         
         ftpConnection.quit()
 
+    def uploadIMG(self,fileLocation:str,fileName:str):
+        if self.doDebug == True: print("uploadIMG called")
+        ftpConnection = ftplib.FTP(host=self.creds.serverAddress,user=self.creds.username,passwd=self.creds.password)
+        ftpConnection.cwd(self.ftpDir)
+
+        ftpConnection.cwd(self.ftpimgSub)
+
+        if self.doDebug == True: print(os.getcwd())
+
+        if not os.path.isdir(self.localWorkDir):
+            os.mkdir(self.localWorkDir)
+        os.chdir(self.localWorkDir)
+        if self.doDebug == True: print(os.getcwd())
+
+        if not os.path.isdir(self.localimgSub):
+            os.mkdir(self.localimgSub)
+        os.chdir(self.localimgSub)
+
+        if self.doDebug == True: print("uploadIMG RAN")
+        ftpConnection.sendcmd('MLST /')
+        if self.doDebug == True: print(ftpConnection.nlst())
+
+        with open(fileLocation, "rb") as file:
+            ftpConnection.storbinary(f"STOR {fileName}", file)
+
+
+        ftpConnection.quit()
 
 
 
