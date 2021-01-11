@@ -15,8 +15,9 @@ The body of this was written in one day on a whim by someone who is *not* a prog
 ## Configuration File:
 Change this to fit your needs, and rename to ``config.py``.
 As stated, I'd *highly* recommend leaving socket.gethostname() in there in case you have multiple things running this- if you do, then you can just fork this repo, change the config, and push.
-
+If you don't want to use an FTP server, just set UseFTP to False.
 ```python
+UseFTP = True
 
 FTPcredentials = credentials('server.domain','username','password')
 

@@ -110,11 +110,13 @@ def appendResultsToCSV(fileLocation,results):
             linewriter.writerow(results)
             csvfile.close()
 
+# Tweaked, enabled not using FTP server:
+
 # Step One: set up connection to FTP server
-ftpTesting = FTPhandler.ftpHandler(config.FTPcredentials,config.FTP_baseDir,config.FTP_CSVfolder,config.FTP_IMGfolder,config.local_baseDir,config.local_CSVfolder,config.local_IMGfolder,config.enableTonsOfPrintInfo)
+if config.UseFTP == True: ftpTesting = FTPhandler.ftpHandler(config.FTPcredentials,config.FTP_baseDir,config.FTP_CSVfolder,config.FTP_IMGfolder,config.local_baseDir,config.local_CSVfolder,config.local_IMGfolder,config.enableTonsOfPrintInfo)
 # Step Two: pull results from FTP server so that it has the most recent copy on hand. Not having a file in the server winds up being okay, because appendresultstoCSV will create a CSV if there isn't one available.
-ftpTesting.getAllCSV()
-ftpTesting.getCSV(config.outputFile)
+if config.UseFTP == True: ftpTesting.getAllCSV()
+if config.UseFTP == True: ftpTesting.getCSV(config.outputFile)
 # Step Three- get results from speedtest-cli, turn them into CSV format, and then save them to the local CSV copy.
 outputLocation = os.path.join(config.local_baseDir,config.local_CSVfolder,config.outputFile)
 if config.enableTonsOfPrintInfo == True: print(outputLocation)
@@ -124,7 +126,7 @@ if config.enableSpeedtestUpdate == True: print("running speedtest now")
 appendResultsToCSV(outputLocation,outputAsList(formatResults(getSpeedtestResults())))
 if config.enableSpeedtestUpdate == True: print("speedtest finished")
 # Step Four- upload the updated CSV file to the FTP server
-# ftpTesting.uploadCSV(config.outputFile)
+# if config.UseFTP == True: ftpTesting.uploadCSV(config.outputFile)
 
 # Step Five- download the image from CSV
 

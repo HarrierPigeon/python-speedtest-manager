@@ -9,6 +9,9 @@ class credentials:
         self.username = username
         self.password = password
 
+
+UseFTP = True
+
 FTPcredentials = credentials('server.domain','username','password')
 
 FTP_baseDir = "main/python-speedtest"
