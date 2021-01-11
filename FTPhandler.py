@@ -97,14 +97,11 @@ class ftpHandler:
         if self.doDebug == True: print("uploadCSV RAN")
         ftpConnection.sendcmd('MLST /')
         if self.doDebug == True: print(ftpConnection.nlst())
-        files = ftpConnection.nlst()
-        if fileLocation in files:
-            with open(fileLocation, "rb") as file:
-                # use FTP's STOR command to upload the file
-                ftpConnection.storbinary(f"STOR {fileLocation}", file)
-        else:
-            if self.doDebug == True: print("file not available")
 
+        with open(fileLocation, "rb") as file:
+                # use FTP's STOR command to upload the file
+            ftpConnection.storbinary(f"STOR {fileLocation}", file)
+        
         ftpConnection.quit()
 
 
